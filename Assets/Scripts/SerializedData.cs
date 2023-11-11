@@ -5,7 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class UserData
 {
-    public Template[] userTemplates;
+    public List<Template> userTemplates;
+    public UserData()
+    {
+        userTemplates = new List<Template>();
+    }
 }
 
 [System.Serializable]
@@ -13,13 +17,11 @@ public class Template
 {
     public string id;
     public string templateName;
-    public Round[] rounds;
-}
-
-[System.Serializable]
-public class Round
-{
-    public Theme[] themes;
+    public List<Theme> themes;
+    public Template()
+    {
+        themes = new List<Theme>();
+    }
 }
 
 [System.Serializable]
@@ -27,7 +29,11 @@ public class Theme
 {
     public string id;
     public string name;
-    public Question[] questions;
+    public List<Question> questions;
+    public Theme()
+    {
+        questions = new List<Question>();
+    }
 }
 
 [System.Serializable]

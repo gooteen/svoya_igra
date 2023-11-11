@@ -2,17 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameDataSO : MonoBehaviour
+[CreateAssetMenu(fileName = "GameData", menuName ="GameData")]
+public class GameDataSO : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public UserData data;
 }

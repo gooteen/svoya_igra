@@ -21,13 +21,15 @@ public class TestScript : MonoBehaviour
         //LoadVideo();
         //string path = Application.dataPath + "/image.png";
         //StartCoroutine(DownloadImage("file://" + path));
-        /*
-        TestSerialization test = new TestSerialization();
+        
+        UserData test = new UserData();
+        test.userTemplates.Add(new Template());
+        test.userTemplates[0].id = "2";
+        test.userTemplates[0].templateName = "sdsdsd";
         string saveFile = Application.dataPath + "/gamedata.json";
         string jsonString = JsonUtility.ToJson(test);
         Debug.Log(jsonString);
         File.WriteAllText(saveFile, jsonString);
-        */
     }
 
     IEnumerator DownloadImage(string MediaUrl)
