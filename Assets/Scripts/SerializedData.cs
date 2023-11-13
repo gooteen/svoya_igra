@@ -15,7 +15,6 @@ public class UserData
 [System.Serializable]
 public class Template
 {
-    public string id;
     public string templateName;
     public List<Theme> themes;
     public Template()
@@ -27,7 +26,6 @@ public class Template
 [System.Serializable]
 public class Theme
 {
-    public string id;
     public string name;
     public List<Question> questions;
     public Theme()
@@ -39,7 +37,6 @@ public class Theme
 [System.Serializable]
 public class Question
 {
-    public string id;
     public int value;
     public bool isCat;
     public string questionText;

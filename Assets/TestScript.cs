@@ -13,18 +13,21 @@ public class TestScript : MonoBehaviour
     public TMP_Text text;
     public VideoPlayer player;
     public Image image;
+    public AudioSource source;
 
     void Start()
     {
         //ReadString();
         //ReadCSV();
         //LoadVideo();
-        //string path = Application.dataPath + "/image.png";
-        //StartCoroutine(DownloadImage("file://" + path));
+        string path = Application.dataPath + "/image.png";
+        //string path = Application.dataPath + "/sound.mp3";
+        StartCoroutine(DownloadImage("file://" + path));
+        //StartCoroutine(DownloadAudio("file://" + path));
         
         UserData test = new UserData();
         test.userTemplates.Add(new Template());
-        test.userTemplates[0].id = "2";
+        //test.userTemplates[0].id = "2";
         test.userTemplates[0].templateName = "sdsdsd";
         string saveFile = Application.dataPath + "/gamedata.json";
         string jsonString = JsonUtility.ToJson(test);
@@ -32,6 +35,22 @@ public class TestScript : MonoBehaviour
         File.WriteAllText(saveFile, jsonString);
     }
 
+    IEnumerator DownloadAudio(string MediaUrl)
+    {
+        UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(MediaUrl, AudioType.MPEG);
+        yield return request.SendWebRequest();
+        if (request.isNetworkError || request.isHttpError)
+        {
+            // файл не найден
+            Debug.Log(request.error);
+        }
+        else
+        {
+            AudioClip clip = DownloadHandlerAudioClip.GetContent(request);
+            source.clip = clip;
+            source.Play();
+        }
+    }
     IEnumerator DownloadImage(string MediaUrl)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
@@ -43,7 +62,7 @@ public class TestScript : MonoBehaviour
         }
         else
         {
-            Texture2D tex = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            Texture2D tex = DownloadHandlerTexture.GetContent(request);
             Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(tex.width / 2, tex.height / 2));
             image.overrideSprite = sprite;
         }
