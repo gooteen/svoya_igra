@@ -11,7 +11,7 @@ public class QuestionItem : MonoBehaviour
 
     private string _questionPoints;
 
-    public string ThemeName
+    public string QuestionValue
     {
         get { return _questionPoints; }
         set

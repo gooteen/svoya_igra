@@ -28,7 +28,6 @@ public class TemplateButton : MonoBehaviour
 
     public void DeleteTemplate()
     {
-        Controller.Instance.GameData.data.userTemplates.RemoveAt(templateId);
-        Controller.Instance.ConfigureTemplateList();
+        Controller.Instance.DeleteTemplate(templateId);
     }
 }

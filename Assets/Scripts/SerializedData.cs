@@ -39,6 +39,7 @@ public class Question
 {
     public int value;
     public bool isCat;
+    public bool isAuction;
     public string questionText;
     public string questionAnswer;
     public string mediaUrl;

@@ -15,6 +15,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject text_noTemplates;
     [SerializeField] private GameObject prefab_templateButton;
     [SerializeField] private GameObject panel_templateButtonView;
+    [SerializeField] private GameObject panel_templateList;
 
     [Header("Dynamic UI elements")]
     [SerializeField] private List<TemplateButton> _templateButtons;
@@ -25,6 +26,11 @@ public class Controller : MonoBehaviour
         private set;
     }
 
+    public GameObject Panel_TemplateList
+    {
+        get { return panel_templateList; }
+    }
+
     public GameDataSO GameData
     {
         get { return _gameData; }
@@ -33,28 +39,49 @@ public class Controller : MonoBehaviour
     public void PullGameData()
     {
         string path = Application.dataPath + _path;
-        if (File.Exists(path))
+
+        if (!File.Exists(path))
         {
-            _gameData.data = Utility.ReadFile(path);
+            Directory.CreateDirectory(path);
+        }
+        string[] files = Directory.GetFiles(path);
+
+        if (files.Length > 0)
+        {
+            List<Template> templateList = new List<Template>();
+            foreach (string file in files)
+            {
+                Template template = Utility.ReadFile(file);
+                if (template != null)
+                {
+                    templateList.Add(template);
+                }
+                else
+                {
+                    Debug.Log($"{file} is not compatible, skipping...");
+                }
+            }
+            _gameData.data.userTemplates = templateList;
         } else
         {
-            UserData data = new UserData();
-            Utility.WriteFile(data, path);
-            _gameData.data = Utility.ReadFile(path);
+            CreateNewGameDataSO();
         }
     }
 
     public void SaveGameData()
     {
         string path = Application.dataPath + _path;
-        Utility.WriteFile(_gameData.data, path);
+        foreach (Template template in _gameData.data.userTemplates)
+        {
+            Utility.WriteFile(template, path + "/" + template.templateName + ".json");
+        }
     }
 
     public void AddNewTemplate()
     {
         Template template = new Template();
 
-        template.templateName = "Новый шаблон раунда";
+        template.templateName = $"Новый шаблон раунда {_gameData.data.userTemplates.Count + 1}";
         template.themes = new List<Theme>();
 
         for (int i = 0; i < 5; i++)
@@ -72,6 +99,15 @@ public class Controller : MonoBehaviour
         _gameData.data.userTemplates.Add(template);
     }
 
+    public void DeleteTemplate(int index)
+    {
+        string path = Application.dataPath + _path;
+        File.Delete(path + "/" + _gameData.data.userTemplates[index].templateName + ".meta");
+        File.Delete(path + "/" + _gameData.data.userTemplates[index].templateName + ".json");
+        _gameData.data.userTemplates.RemoveAt(index);
+        ConfigureTemplateList();
+    }
+
     public void ConfigureTemplateList()
     {
         ClearTemplateButtonList();
@@ -86,6 +122,13 @@ public class Controller : MonoBehaviour
             text_noTemplates.SetActive(true);
             panel_templateButtonView.SetActive(false);
         }
+    }
+
+    private void CreateNewGameDataSO()
+    {
+        Debug.Log("No data to load");
+        UserData data = new UserData();
+        _gameData.data = data;
     }
 
     private void FillTemplateButtonList()
