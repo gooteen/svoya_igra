@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject prefab_templateButton;
     [SerializeField] private GameObject panel_templateButtonView;
     [SerializeField] private GameObject panel_templateList;
+    [SerializeField] private GameObject panel_alert_sameTitlesError;
 
     [Header("Dynamic UI elements")]
     [SerializeField] private List<TemplateButton> _templateButtons;
@@ -70,11 +71,41 @@ public class Controller : MonoBehaviour
 
     public void SaveGameData()
     {
-        string path = Application.dataPath + _path;
-        foreach (Template template in _gameData.data.userTemplates)
+        if (DataNotCorrupted())
         {
-            Utility.WriteFile(template, path + "/" + template.templateName + ".json");
+            string path = Application.dataPath + _path;
+            foreach (Template template in _gameData.data.userTemplates)
+            {
+                if (template.lastSavedTemplateName != template.templateName)
+                {
+                    File.Delete(path + "/" + template.lastSavedTemplateName + ".json.meta");
+                    File.Delete(path + "/" + template.lastSavedTemplateName + ".json");
+                    template.lastSavedTemplateName = template.templateName;
+                }
+                Utility.WriteFile(template, path + "/" + template.templateName + ".json");
+            }
+        } else
+        {
+            panel_alert_sameTitlesError.SetActive(true);
         }
+    }
+
+    public bool DataNotCorrupted()
+    {
+        for (int i = 0; i < _gameData.data.userTemplates.Count; i++)
+        {
+            for (int j = 0; j < _gameData.data.userTemplates.Count; j++)
+            {
+                if (j != i)
+                {
+                    if (_gameData.data.userTemplates[i].templateName == _gameData.data.userTemplates[j].templateName)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void AddNewTemplate()
@@ -93,6 +124,7 @@ public class Controller : MonoBehaviour
             {
                 template.themes[i].questions.Add(new Question());
                 template.themes[i].questions[j].value = (j+1) * 100;
+                template.themes[i].questions[j].type = QuestionType.Regular;
             }
         }
 
@@ -102,8 +134,8 @@ public class Controller : MonoBehaviour
     public void DeleteTemplate(int index)
     {
         string path = Application.dataPath + _path;
-        File.Delete(path + "/" + _gameData.data.userTemplates[index].templateName + ".meta");
-        File.Delete(path + "/" + _gameData.data.userTemplates[index].templateName + ".json");
+        File.Delete(path + "/" + _gameData.data.userTemplates[index].lastSavedTemplateName + ".json.meta");
+        File.Delete(path + "/" + _gameData.data.userTemplates[index].lastSavedTemplateName + ".json");
         _gameData.data.userTemplates.RemoveAt(index);
         ConfigureTemplateList();
     }

@@ -7,7 +7,7 @@ public class ThemeItem : MonoBehaviour
 {
     public int themeId;
 
-    [SerializeField] private TMP_Text _templateNameText;
+    [SerializeField] private TMP_InputField _templateNameText;
 
     [SerializeField] private Transform _container_questions;
     [SerializeField] private List<QuestionItem> questionList;
@@ -28,6 +28,17 @@ public class ThemeItem : MonoBehaviour
     private void Awake()
     {
         FillQuestionList();
+    }
+
+    public void DeleteTheme()
+    {
+        TemplateEditor.Instance.ClearThemeRow(themeId);
+    }
+    
+    public void UpdateThemeName()
+    {
+        _themeName = _templateNameText.text;
+        Controller.Instance.GameData.data.userTemplates[TemplateEditor.Instance.chosenTemplate].themes[themeId].name = _themeName;
     }
 
     private void FillQuestionList()

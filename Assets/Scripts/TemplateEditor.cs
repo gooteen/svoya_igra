@@ -9,8 +9,6 @@ public class TemplateEditor : MonoBehaviour
 {
     [Header("Indices")]
     public int chosenTemplate;
-    public int chosenTheme;
-    public int chosenQuestion;
 
     [Header("UI")]
     [SerializeField] private Transform _container_themes;
@@ -41,6 +39,11 @@ public class TemplateEditor : MonoBehaviour
         Controller.Instance.Panel_TemplateList.SetActive(false);
     }
 
+    public void SaveThemeTitle()
+    {
+        Controller.Instance.GameData.data.userTemplates[chosenTemplate].templateName = _input_title.text;
+    }
+
     public void SetTemplateTitleInputField()
     {
         _input_title.text = Controller.Instance.GameData.data.userTemplates[chosenTemplate].templateName;
@@ -65,6 +68,59 @@ public class TemplateEditor : MonoBehaviour
             Destroy(button.gameObject);
         }
         _themeButtons.Clear();
+    }
+
+    public void ClearQuestionColumn(int id)
+    {
+        foreach (Theme theme in Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes)
+        {
+            theme.questions.RemoveAt(id);
+        }
+        ClearThemesList();
+        FillThemesList();
+    }
+
+    public void AddQuestionColumn()
+    {
+        foreach (Theme theme in Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes)
+        {
+            Question question = new Question();
+            question.value = 100;
+            theme.questions.Add(question);
+        }
+        ClearThemesList();
+        FillThemesList();
+    }
+
+    public void ClearThemeRow(int id)
+    {
+        Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes.RemoveAt(id);
+        ClearThemesList();
+        FillThemesList();
+    }
+
+    public void AddThemeRow()
+    {
+        int questionsNum = 0;
+
+        if (Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes.Count == 0)
+        {
+            questionsNum = 5;
+        } else
+        {
+            questionsNum = Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[0].questions.Count;
+        }
+
+        Theme theme = new Theme();
+        theme.name = "Новая тема";
+        for (int i = 0; i < questionsNum; i++)
+        {
+            theme.questions.Add(new Question());
+            theme.questions[i].value = (i + 1) * 100;
+        }
+        Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes.Add(theme);
+        ClearThemesList();
+        FillThemesList();
     }
 
     private void Awake()

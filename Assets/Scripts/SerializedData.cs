@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum QuestionType { Cat, Auction, Regular }
+
 [System.Serializable]
 public class UserData
 {
@@ -16,6 +18,7 @@ public class UserData
 public class Template
 {
     public string templateName;
+    public string lastSavedTemplateName;
     public List<Theme> themes;
     public Template()
     {
@@ -38,8 +41,7 @@ public class Theme
 public class Question
 {
     public int value;
-    public bool isCat;
-    public bool isAuction;
+    public QuestionType type;
     public string questionText;
     public string questionAnswer;
     public string mediaUrl;
