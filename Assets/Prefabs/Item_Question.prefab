@@ -383,7 +383,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7410722811002634487}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2852020414421084025}
+        m_MethodName: OpenQuestionEditor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2852020414421084025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,4 +408,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questionId: 0
+  themeId: 0
   _questionPointsText: {fileID: 3126739187228421431}

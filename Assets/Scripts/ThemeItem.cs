@@ -49,6 +49,7 @@ public class ThemeItem : MonoBehaviour
             QuestionItem quesitonClass = questionObject.GetComponent<QuestionItem>();
             questionList.Add(quesitonClass);
             quesitonClass.questionId = i;
+            quesitonClass.themeId = themeId;
             quesitonClass.QuestionValue = Controller.Instance.GameData.data.userTemplates[TemplateEditor.Instance.chosenTemplate].themes[themeId].questions[i].value.ToString();
         }
     }

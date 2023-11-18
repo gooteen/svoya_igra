@@ -32,6 +32,11 @@ public class Controller : MonoBehaviour
         get { return panel_templateList; }
     }
 
+    public string Path
+    {
+        get { return _path; }
+    }
+
     public GameDataSO GameData
     {
         get { return _gameData; }

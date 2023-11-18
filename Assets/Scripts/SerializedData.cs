@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum QuestionType { Cat, Auction, Regular }
+public enum QuestionType { Regular, Auction, Cat }
 
 [System.Serializable]
 public class UserData
@@ -44,5 +44,8 @@ public class Question
     public QuestionType type;
     public string questionText;
     public string questionAnswer;
-    public string mediaUrl;
+    public string mediaUrlQuestion;
+    public int mediaQuestionExtension;
+    public string mediaUrlAnswer;
+    public int mediaAnswerExtension;
 }

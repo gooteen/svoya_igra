@@ -26,4 +26,9 @@ public class QuestionItem : MonoBehaviour
     {
         TemplateEditor.Instance.ClearQuestionColumn(questionId);
     }
+
+    public void OpenQuestionEditor()
+    {
+        QuestionEditor.Instance.ConfigureQuestionEditor(themeId, questionId);
+    }
 }
