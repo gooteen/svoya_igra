@@ -152,7 +152,7 @@ public class Controller : MonoBehaviour
         {
             text_noTemplates.SetActive(false);
             panel_templateButtonView.SetActive(true);
-            FillTemplateButtonList();
+            FillTemplateButtonList(prefab_templateButton, _container_templates);
         }
         else
         {
@@ -168,11 +168,11 @@ public class Controller : MonoBehaviour
         _gameData.data = data;
     }
 
-    private void FillTemplateButtonList()
+    public void FillTemplateButtonList(GameObject prefab, Transform containter)
     {
         for (int i = 0; i < _gameData.data.userTemplates.Count; i++)
         {
-            GameObject templateObject = Instantiate(prefab_templateButton, _container_templates);
+            GameObject templateObject = Instantiate(prefab, containter);
             TemplateButton templateClass = templateObject.GetComponent<TemplateButton>();
             _templateButtons.Add(templateClass);
             templateClass.templateId = i;
@@ -180,7 +180,7 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void ClearTemplateButtonList()
+    public void ClearTemplateButtonList()
     {
         foreach (TemplateButton button in _templateButtons)
         {
@@ -193,6 +193,5 @@ public class Controller : MonoBehaviour
     {
         Instance = this;
         PullGameData();
-        ConfigureTemplateList();
     }
 }
