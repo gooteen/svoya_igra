@@ -25,11 +25,6 @@ public class ThemeItem : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        FillQuestionList();
-    }
-
     public void DeleteTheme()
     {
         TemplateEditor.Instance.ClearThemeRow(themeId);
@@ -41,16 +36,16 @@ public class ThemeItem : MonoBehaviour
         Controller.Instance.GameData.data.userTemplates[TemplateEditor.Instance.chosenTemplate].themes[themeId].name = _themeName;
     }
 
-    private void FillQuestionList()
+    public void FillQuestionList(int chosenTemplate)
     {
-        for(int i = 0; i < Controller.Instance.GameData.data.userTemplates[TemplateEditor.Instance.chosenTemplate].themes[themeId].questions.Count; i++)
+        for(int i = 0; i < Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[themeId].questions.Count; i++)
         {
             GameObject questionObject = Instantiate(prefab_question, _container_questions);
             QuestionItem quesitonClass = questionObject.GetComponent<QuestionItem>();
             questionList.Add(quesitonClass);
             quesitonClass.questionId = i;
             quesitonClass.themeId = themeId;
-            quesitonClass.QuestionValue = Controller.Instance.GameData.data.userTemplates[TemplateEditor.Instance.chosenTemplate].themes[themeId].questions[i].value.ToString();
+            quesitonClass.QuestionValue = Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[themeId].questions[i].value.ToString();
         }
     }
 }

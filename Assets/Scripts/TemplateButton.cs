@@ -30,4 +30,9 @@ public class TemplateButton : MonoBehaviour
     {
         Controller.Instance.DeleteTemplate(templateId);
     }
+
+    public void SetCurrentRoundTemplate()
+    {
+        GameController.Instance.chosenTemplate = templateId;
+    }
 }

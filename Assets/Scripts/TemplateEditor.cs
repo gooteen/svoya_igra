@@ -58,6 +58,7 @@ public class TemplateEditor : MonoBehaviour
             _themeButtons.Add(themeClass);
             themeClass.themeId = i;
             themeClass.ThemeName = Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[i].name;
+            themeClass.FillQuestionList(chosenTemplate);
         }
     }
 
