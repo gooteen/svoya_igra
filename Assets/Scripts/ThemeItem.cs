@@ -8,6 +8,7 @@ public class ThemeItem : MonoBehaviour
     public int themeId;
 
     [SerializeField] private TMP_InputField _templateNameText;
+    [SerializeField] private TMP_Text _templateText;
 
     [SerializeField] private Transform _container_questions;
     [SerializeField] private List<QuestionItem> questionList;
@@ -21,7 +22,14 @@ public class ThemeItem : MonoBehaviour
         set
         {
             _themeName = value;
-            _templateNameText.text = _themeName;
+            if (_templateNameText != null)
+            {
+                _templateNameText.text = _themeName;
+            }
+            if(_templateText != null)
+            {
+                _templateText.text = _themeName;
+            }
         }
     }
 
