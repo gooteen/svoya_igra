@@ -42,6 +42,11 @@ public class Controller : MonoBehaviour
         get { return _gameData; }
     }
 
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
     public void PullGameData()
     {
         string path = Application.dataPath + _path;
