@@ -57,7 +57,6 @@ public class TestScript : MonoBehaviour
         yield return request.SendWebRequest();
         if (request.isNetworkError || request.isHttpError)
         {
-            // файл не найден
             Debug.Log(request.error);
         }
         else

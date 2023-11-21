@@ -28,6 +28,14 @@ public class QuestionItem : MonoBehaviour
         marker.SetActive(true);
     }
 
+    public void OpenQuestionWindow()
+    {
+        GameController.Instance.SetIndices(themeId, questionId);
+        GameController.Instance.ConfigureQuestionWindow(0);
+        GameController.Instance.PanelGameScreen.SetActive(false);
+        GameController.Instance.PanelQuestionScreen.SetActive(true);
+    }
+
     public void DeleteQuestions()
     {
         TemplateEditor.Instance.ClearQuestionColumn(questionId);

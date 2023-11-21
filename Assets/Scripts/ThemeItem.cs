@@ -11,7 +11,7 @@ public class ThemeItem : MonoBehaviour
     [SerializeField] private TMP_Text _templateText;
 
     [SerializeField] private Transform _container_questions;
-    [SerializeField] private List<QuestionItem> questionList;
+    [SerializeField] private List<QuestionItem> _questionList;
     [SerializeField] private GameObject prefab_question;
 
     private string _themeName;
@@ -33,6 +33,11 @@ public class ThemeItem : MonoBehaviour
         }
     }
 
+    public List<QuestionItem> QuestionList
+    {
+        get { return _questionList; }
+    }
+
     public void DeleteTheme()
     {
         TemplateEditor.Instance.ClearThemeRow(themeId);
@@ -50,7 +55,7 @@ public class ThemeItem : MonoBehaviour
         {
             GameObject questionObject = Instantiate(prefab_question, _container_questions);
             QuestionItem quesitonClass = questionObject.GetComponent<QuestionItem>();
-            questionList.Add(quesitonClass);
+            _questionList.Add(quesitonClass);
             quesitonClass.questionId = i;
             quesitonClass.themeId = themeId;
             quesitonClass.QuestionValue = Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[themeId].questions[i].value.ToString();
