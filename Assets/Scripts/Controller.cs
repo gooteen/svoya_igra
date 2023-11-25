@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.Video;
 using UnityEngine.UI;
 using TMPro;
 
@@ -17,9 +18,13 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject panel_templateButtonView;
     [SerializeField] private GameObject panel_templateList;
     [SerializeField] private GameObject panel_alert_sameTitlesError;
+    [SerializeField] private GameObject panel_intro;
 
     [Header("Dynamic UI elements")]
     [SerializeField] private List<TemplateButton> _templateButtons;
+
+    private VideoPlayer _videoPlayer;
+    private AudioSource _audioPlayer;
 
     public static Controller Instance
     {
@@ -166,12 +171,6 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void CreateNewGameDataSO()
-    {
-        Debug.Log("No data to load");
-        UserData data = new UserData();
-        _gameData.data = data;
-    }
 
     public void FillTemplateButtonList(GameObject prefab, Transform containter)
     {
@@ -194,9 +193,42 @@ public class Controller : MonoBehaviour
         _templateButtons.Clear();
     }
 
+    public void PlayThemesSound()
+    {
+        _audioPlayer.clip = Resources.Load<AudioClip>("themes");
+        _audioPlayer.Play();
+    }
+
+    public void PlayCatSound()
+    {
+        _audioPlayer.clip = Resources.Load<AudioClip>("cat");
+        _audioPlayer.Play();
+    }
+
+    public void PlayAuctionSound()
+    {
+        _audioPlayer.clip = Resources.Load<AudioClip>("auction");
+        _audioPlayer.Play();
+    }
+
+    public void SkipIntro()
+    {
+        panel_intro.SetActive(false);
+    }
+
+    private void CreateNewGameDataSO()
+    {
+        Debug.Log("No data to load");
+        UserData data = new UserData();
+        _gameData.data = data;
+    }
+
     private void Awake()
     {
         Instance = this;
         PullGameData();
+        _videoPlayer = GetComponent<VideoPlayer>();
+        _audioPlayer = GetComponent<AudioSource>();
+        _videoPlayer.loopPointReached += videoplayer => { panel_intro.SetActive(false); };
     }
 }

@@ -50,6 +50,8 @@ public class GameController : MonoBehaviour
     [Header("Plain Text Layout")]
     [SerializeField] private GameObject _panel_plainText;
     [SerializeField] private TMP_Text _text_questionBodyPlain;
+    [SerializeField] private TMP_Text _text_isAuctionPlain;
+    [SerializeField] private TMP_Text _text_isCatPlain;
     [SerializeField] private Button _button_forward_plain;
     [SerializeField] private Button _button_back_plain;
 
@@ -59,6 +61,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _placeholder_mp3;
     [SerializeField] private Image _image_mediaPng;
     [SerializeField] private TMP_Text _text_questionBodyMedia;
+    [SerializeField] private TMP_Text _text_isAuctionMedia;
+    [SerializeField] private TMP_Text _text_isCatMedia;
     [SerializeField] private Button _button_forward_media;
     [SerializeField] private Button _button_back_media;
 
@@ -190,7 +194,15 @@ public class GameController : MonoBehaviour
 
     public void SetWindowLayout(int mode)
     {
+        _text_isCatMedia.gameObject.SetActive(false);
+        _text_isCatPlain.gameObject.SetActive(false);
+        _text_isAuctionMedia.gameObject.SetActive(false);
+        _text_isAuctionPlain.gameObject.SetActive(false);
+
         string windowText = "";
+
+        bool isCat = false;
+        bool isAuction = false;
 
         if (mode == 0)
         {
@@ -198,6 +210,13 @@ public class GameController : MonoBehaviour
             QuestionEditor.Instance.formatMap.TryGetValue(Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[chosenTheme].questions[chosenQuestion].mediaQuestionExtension, out _mediaExtension);
             windowText = Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[chosenTheme].questions[chosenQuestion].questionText;
             SetQuestionButtons();
+            if (Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[chosenTheme].questions[chosenQuestion].type == QuestionType.Auction)
+            {
+                isAuction = true;
+            } else if (Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[chosenTheme].questions[chosenQuestion].type == QuestionType.Cat)
+            {
+                isCat = true;
+            }
 
         } else
         {
@@ -206,16 +225,39 @@ public class GameController : MonoBehaviour
             windowText = Controller.Instance.GameData.data.userTemplates[chosenTemplate].themes[chosenTheme].questions[chosenQuestion].questionAnswer;
             SetAnswerButtons();
         }
+
         string path = Application.dataPath + Controller.Instance.Path + "/" + _mediaName + _mediaExtension;
         if (File.Exists(path))
         {
             SetMediaContent(path);
             _text_questionBodyMedia.text = windowText;
             _panel_media.SetActive(true);
+
+            if (isCat)
+            {
+                _text_isCatMedia.gameObject.SetActive(true);
+                Controller.Instance.PlayCatSound();
+            }
+            else if (isAuction)
+            {
+                _text_isAuctionMedia.gameObject.SetActive(true);
+                Controller.Instance.PlayAuctionSound();
+            }
         } else
         {
             _text_questionBodyPlain.text = windowText;
             _panel_plainText.SetActive(true);
+
+            if (isCat)
+            {
+                _text_isCatPlain.gameObject.SetActive(true);
+                Controller.Instance.PlayCatSound();
+            }
+            else if (isAuction)
+            {
+                _text_isAuctionPlain.gameObject.SetActive(true);
+                Controller.Instance.PlayAuctionSound();
+            }
         }
     }
 
@@ -285,7 +327,9 @@ public class GameController : MonoBehaviour
             _template_name.text = Controller.Instance.GameData.data.userTemplates[chosenTemplate].templateName;
             _panel_gameScreen.SetActive(true);
             _panel_lobby.SetActive(false);
-        } else
+            Controller.Instance.PlayThemesSound();
+        }
+        else
         {
             _panel_Alert.SetActive(true);
         }
@@ -455,5 +499,6 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _videoPlayer.loopPointReached += v => { _videoControlButton.image.sprite = _mediaPlay; };
     }
 }
