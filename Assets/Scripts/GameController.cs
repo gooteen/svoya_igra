@@ -117,6 +117,7 @@ public class GameController : MonoBehaviour
 
     public void ConfigureQuestionWindow(int mode)
     {
+        Controller.Instance.AudioPlayer.Stop();
         _mediaName = "";
         _mediaExtension = "";
         _panel_plainText.SetActive(false);

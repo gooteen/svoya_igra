@@ -155,9 +155,19 @@ public class QuestionEditor : MonoBehaviour
 
     private void UpdateColumnValues(int templateId)
     {
+        int parsedValue = Controller.Instance.GameData.data.userTemplates[templateId].themes[chosenTheme].questions[chosenQuestion].value;
+
+        try
+        {
+            parsedValue = int.Parse(input_value.text);
+        } catch (System.Exception e)
+        {
+            Debug.Log(e);
+        }
+        
         foreach (Theme theme in Controller.Instance.GameData.data.userTemplates[templateId].themes)
         {
-            theme.questions[chosenQuestion].value = int.Parse(input_value.text);
+            theme.questions[chosenQuestion].value = parsedValue;
         }
         TemplateEditor.Instance.ConfigureEditorScreen(TemplateEditor.Instance.chosenTemplate);
     }

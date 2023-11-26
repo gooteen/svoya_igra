@@ -37,6 +37,11 @@ public class Controller : MonoBehaviour
         get { return panel_templateList; }
     }
 
+    public AudioSource AudioPlayer
+    {
+        get { return _audioPlayer; }
+    }
+
     public string Path
     {
         get { return _path; }
