@@ -19,6 +19,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject panel_templateList;
     [SerializeField] private GameObject panel_alert_sameTitlesError;
     [SerializeField] private GameObject panel_intro;
+    [SerializeField] private GameObject panel_main;
 
     [Header("Dynamic UI elements")]
     [SerializeField] private List<TemplateButton> _templateButtons;
@@ -219,6 +220,7 @@ public class Controller : MonoBehaviour
     public void SkipIntro()
     {
         panel_intro.SetActive(false);
+        panel_main.SetActive(true);
     }
 
     private void CreateNewGameDataSO()
@@ -234,6 +236,10 @@ public class Controller : MonoBehaviour
         PullGameData();
         _videoPlayer = GetComponent<VideoPlayer>();
         _audioPlayer = GetComponent<AudioSource>();
-        _videoPlayer.loopPointReached += videoplayer => { panel_intro.SetActive(false); };
+        _videoPlayer.loopPointReached += videoplayer => 
+        {
+            panel_intro.SetActive(false);
+            panel_main.SetActive(true);
+        };
     }
 }

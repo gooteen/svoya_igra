@@ -143,8 +143,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   themeId: 0
   _templateNameText: {fileID: 2622594973845233871}
+  _templateText: {fileID: 0}
   _container_questions: {fileID: 6051122586732788204}
-  questionList: []
+  _questionList: []
   prefab_question: {fileID: 7410722811002634482, guid: 5ae068059d70fc4479ef45238cc1ac26,
     type: 3}
 --- !u!1 &6051122585986104306
@@ -605,6 +606,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2622594973587347081, guid: b6ae1b672cef7d04385e9cb51a03a9f7,
         type: 3}
+      propertyPath: m_margin.w
+      value: 2.1211548
+      objectReference: {fileID: 0}
+    - target: {fileID: 2622594973587347081, guid: b6ae1b672cef7d04385e9cb51a03a9f7,
+        type: 3}
       propertyPath: m_fontColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -642,6 +648,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2622594973587347086, guid: b6ae1b672cef7d04385e9cb51a03a9f7,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2622594973727992370, guid: b6ae1b672cef7d04385e9cb51a03a9f7,
+        type: 3}
+      propertyPath: m_Padding.w
+      value: -8.17
       objectReference: {fileID: 0}
     - target: {fileID: 2622594973758483643, guid: b6ae1b672cef7d04385e9cb51a03a9f7,
         type: 3}
