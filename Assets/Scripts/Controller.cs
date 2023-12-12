@@ -211,6 +211,12 @@ public class Controller : MonoBehaviour
         _audioPlayer.Play();
     }
 
+    public void PlayVictorySound()
+    {
+        _audioPlayer.clip = Resources.Load<AudioClip>("victory");
+        _audioPlayer.Play();
+    }
+
     public void PlayAuctionSound()
     {
         _audioPlayer.clip = Resources.Load<AudioClip>("auction");

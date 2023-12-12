@@ -32,10 +32,13 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _prefab_ThemeItem;
     [SerializeField] private List<ThemeItem> _themeButtons;
     [SerializeField] private Transform _container_PlayerItemsGame;
+    [SerializeField] private Transform _container_PlayerItemsVictory;
+    [SerializeField] private List<PlayerItem> _list_PlayerItemsVictory;
     [SerializeField] private GameObject _prefab_PlayerItemGame;
     [SerializeField] private GameObject _panel_Alert;
     [SerializeField] private GameObject _panel_gameScreen;
     [SerializeField] private GameObject _panel_questionScreen;
+    [SerializeField] private GameObject _panel_victoryScreen;
     
     [Header("Media Management")]
     [SerializeField] private Sprite _mediaPause;
@@ -71,6 +74,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private List<CalculationItem> _calculationItems;
     [SerializeField] private Transform _container_calcItems;
     [SerializeField] private GameObject _prefab_calculationItem;
+
+    private int _counterTotal;
+    private int _counterCurrent;
 
     public static GameController Instance
     {
@@ -154,10 +160,6 @@ public class GameController : MonoBehaviour
             if (item.dropdown.value == 1)
             {
                 _playerData.players[item.id].score -= parsedValue;
-                if (_playerData.players[item.id].score < 0)
-                {
-                    _playerData.players[item.id].score = 0;
-                }
             } else if (item.dropdown.value == 2)
             {
                 _playerData.players[item.id].score += parsedValue;
@@ -323,6 +325,7 @@ public class GameController : MonoBehaviour
         {
             ClearThemesList();
             FillThemesList();
+            SetCounters();
             ClearPlayerList();
             FillPlayerListInGame();
             _template_name.text = Controller.Instance.GameData.data.userTemplates[chosenTemplate].templateName;
@@ -369,7 +372,9 @@ public class GameController : MonoBehaviour
 
     public void FillPlayerListInGame()
     {
-        for (int i = 0; i < _playerData.players.Count; i++)
+        List<PlayerData> playerList = _playerData.players;
+        playerList.Sort();
+        for (int i = 0; i < playerList.Count; i++)
         {
             GameObject playerObject = Instantiate(_prefab_PlayerItemGame, _container_PlayerItemsGame);
             PlayerItem playerClass = playerObject.GetComponent<PlayerItem>();
@@ -405,6 +410,67 @@ public class GameController : MonoBehaviour
         } else
         {
             _text_noPlayers.SetActive(false);
+        }
+    }
+
+    public void IncreaseScore()
+    {
+        _counterCurrent++;
+        if (_counterCurrent >= _counterTotal)
+        {
+            SetVictoryScreen();
+        }
+    }
+
+    private void SetVictoryScreen()
+    {
+        ClearPlayersOnVictoryScreen();
+        FillPlayersOnVictoryScreen();
+        Controller.Instance.PlayVictorySound();
+        _panel_victoryScreen.SetActive(true);
+    }
+
+    private void ClearPlayersOnVictoryScreen()
+    {
+        foreach(PlayerItem item in _list_PlayerItemsVictory)
+        {
+            Destroy(item.gameObject);
+        }
+        _list_PlayerItemsVictory.Clear();
+    }
+
+    private void FillPlayersOnVictoryScreen()
+    {
+        int c = 0;
+        for (int i = 0; i < _list_PlayerItems.Count; i++)
+        {
+            c++;
+
+            GameObject playerObject = Instantiate(_prefab_PlayerItemGame, _container_PlayerItemsVictory);
+            PlayerItem playerClass = playerObject.GetComponent<PlayerItem>();
+            _list_PlayerItemsVictory.Add(playerClass);
+            playerClass.text_name.text = _playerData.players[_list_PlayerItems[i].index].name;
+            playerClass.text_score.text = _playerData.players[_list_PlayerItems[i].index].score.ToString();
+
+            if (c == 4)
+            {
+                break;
+            }
+        }
+    }
+
+
+    private void SetCounters()
+    {
+        _counterTotal = 0;
+        _counterCurrent = 0;
+
+        foreach (ThemeItem itemButton in _themeButtons)
+        {
+            foreach (QuestionItem itemQuestion in itemButton.QuestionList)
+            {
+                _counterTotal += 1;
+            }
         }
     }
 
