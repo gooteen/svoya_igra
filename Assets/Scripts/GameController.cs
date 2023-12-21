@@ -270,7 +270,7 @@ public class GameController : MonoBehaviour
         _placeholder_mp3.SetActive(false);
         _image_mediaPng.gameObject.SetActive(false);
 
-        if (_mediaExtension == ".png")
+        if (_mediaExtension == ".png" || _mediaExtension == ".jpg")
         {
             StartCoroutine(DownloadImage(path));
         }
@@ -552,7 +552,7 @@ public class GameController : MonoBehaviour
         yield return request.SendWebRequest();
         if (request.isNetworkError || request.isHttpError)
         {
-            Debug.Log(request.error);
+            Debug.Log("not working");
         }
         else
         {

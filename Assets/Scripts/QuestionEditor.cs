@@ -179,7 +179,8 @@ public class QuestionEditor : MonoBehaviour
         {
             {0, ".png"},
             {1, ".mp3"},
-            {2, ".mp4"}
+            {2, ".mp4"},
+            {3, ".jpg"}
         };
     }
 }
