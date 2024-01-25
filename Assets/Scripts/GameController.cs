@@ -76,7 +76,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _prefab_calculationItem;
 
     private int _counterTotal;
-    private int _counterCurrent;
 
     public static GameController Instance
     {
@@ -325,7 +324,7 @@ public class GameController : MonoBehaviour
         {
             ClearThemesList();
             FillThemesList();
-            SetCounters();
+            SetCounter();
             ClearPlayerList();
             FillPlayerListInGame();
             _template_name.text = Controller.Instance.GameData.data.userTemplates[chosenTemplate].templateName;
@@ -413,15 +412,23 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void IncreaseScore()
+    public void CheckScore()
     {
-        _counterCurrent++;
-        if (_counterCurrent >= _counterTotal)
+        int counterCurrent = 0;
+        foreach (ThemeItem itemButton in _themeButtons)
+        {
+            foreach (QuestionItem itemQuestion in itemButton.QuestionList)
+            {
+                if (itemQuestion.isChecked) counterCurrent += 1;
+            }
+        }
+
+        if (counterCurrent == _counterTotal)
         {
             SetVictoryScreen();
         }
     }
-
+    
     private void SetVictoryScreen()
     {
         ClearPlayersOnVictoryScreen();
@@ -444,26 +451,18 @@ public class GameController : MonoBehaviour
         int c = 0;
         for (int i = 0; i < _list_PlayerItems.Count; i++)
         {
-            c++;
-
             GameObject playerObject = Instantiate(_prefab_PlayerItemGame, _container_PlayerItemsVictory);
             PlayerItem playerClass = playerObject.GetComponent<PlayerItem>();
             _list_PlayerItemsVictory.Add(playerClass);
             playerClass.text_name.text = _playerData.players[_list_PlayerItems[i].index].name;
             playerClass.text_score.text = _playerData.players[_list_PlayerItems[i].index].score.ToString();
-
-            if (c == 4)
-            {
-                break;
-            }
         }
     }
 
 
-    private void SetCounters()
+    private void SetCounter()
     {
         _counterTotal = 0;
-        _counterCurrent = 0;
 
         foreach (ThemeItem itemButton in _themeButtons)
         {
@@ -484,6 +483,8 @@ public class GameController : MonoBehaviour
                 _panel_gameScreen.SetActive(true);
             });
 
+        //_button_back_media.onClick.AddListener(DecreaseScore);
+
         _button_back_plain.onClick.RemoveAllListeners();
         _button_back_plain.onClick.AddListener(
             delegate
@@ -491,6 +492,16 @@ public class GameController : MonoBehaviour
                 _panel_questionScreen.SetActive(false);
                 _panel_gameScreen.SetActive(true);
             });
+
+        //_button_back_plain.onClick.AddListener(DecreaseScore);
+
+        _button_back_plain.onClick.AddListener(
+            delegate
+            {
+                _panel_questionScreen.SetActive(false);
+                _panel_gameScreen.SetActive(true);
+            });
+
 
         _button_forward_media.onClick.RemoveAllListeners();
         _button_forward_media.onClick.AddListener(

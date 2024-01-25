@@ -8,6 +8,7 @@ public class QuestionItem : MonoBehaviour
     public int questionId;
     public int themeId;
     public GameObject marker;
+    public bool isChecked;
 
     [SerializeField] private TMP_Text _questionPointsText;
 
@@ -26,6 +27,7 @@ public class QuestionItem : MonoBehaviour
     public void ActivateMarker()
     {
         marker.SetActive(true);
+        isChecked = true;
     }
 
     public void OpenQuestionWindow()
@@ -44,5 +46,10 @@ public class QuestionItem : MonoBehaviour
     public void OpenQuestionEditor()
     {
         QuestionEditor.Instance.ConfigureQuestionEditor(themeId, questionId);
+    }
+
+    private void Start()
+    {
+        isChecked = false;
     }
 }
