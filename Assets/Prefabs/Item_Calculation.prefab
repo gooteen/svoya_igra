@@ -200,8 +200,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e2c65c31f12e8a14f80353c288485650, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 78a83c6e4010cb4438c4dd0c71f98c72, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 4.12
 --- !u!114 &5139980384359456983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,6 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 214ec045a61d1cc4cb2d7238ed1b747b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   inputField: {fileID: 5139980384359456983}
   playerName: {fileID: 5270071945098026806}
   dropdown: {fileID: 5270071946726668263}
